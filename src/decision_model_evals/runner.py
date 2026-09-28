@@ -254,7 +254,11 @@ def _success_row(case: Case, result, timing_ms: float, attempts: int) -> dict[st
         "resolved_provider": result.provider,
         "input_tokens": result.input_tokens,
         "output_tokens": result.output_tokens,
+        "cached_input_tokens": result.cached_input_tokens,
+        "cache_write_tokens": result.cache_write_tokens,
+        "reasoning_tokens": result.reasoning_tokens,
         "provider_cost_usd": result.provider_cost_usd or 0.0,
+        "provider_cost_basis": result.provider_cost_basis,
         "provider_latency_ms": result.provider_latency_ms,
         "raw_response": result.raw,
     }

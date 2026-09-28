@@ -47,8 +47,8 @@ def compare_runs(run_dirs: list[Path]) -> str:
         "",
         "## Primitive quality",
         "",
-        "| Model | Choice acc | Choice Brier | Noul acc | Noul Brier | Score exact | Score MAE |",
-        "|---|---:|---:|---:|---:|---:|---:|",
+        "| Model | Choice acc | Choice Brier | Choice prob. cov. | Noul acc | Noul Brier | Noul prob. cov. | Score exact | Score expected MAE | Score prob. cov. |",
+        "|---|---:|---:|---:|---:|---:|---:|---:|---:|---:|",
     ])
     for item in loaded:
         summary = item["summary"]
@@ -56,9 +56,9 @@ def compare_runs(run_dirs: list[Path]) -> str:
         n = summary["groups"].get("primitive:noul", {})
         s = summary["groups"].get("primitive:score", {})
         lines.append(
-            f"| {summary.get('model')} | {_pct(c.get('accuracy'))} | {_num(c.get('brier'))} | "
-            f"{_pct(n.get('accuracy'))} | {_num(n.get('brier'))} | "
-            f"{_pct(s.get('exact_accuracy'))} | {_num(s.get('mae_expected_score'))} |"
+            f"| {summary.get('model')} | {_pct(c.get('accuracy'))} | {_num(c.get('brier'))} | {_pct(_probability_coverage(c))} | "
+            f"{_pct(n.get('accuracy'))} | {_num(n.get('brier'))} | {_pct(_probability_coverage(n))} | "
+            f"{_pct(s.get('exact_accuracy'))} | {_num(s.get('mae_expected_score'))} | {_pct(_probability_coverage(s))} |"
         )
 
     lines.extend([
@@ -154,3 +154,12 @@ def _num(value: Any) -> str:
 
 def _usd(value: Any) -> str:
     return "—" if value is None else f"${float(value):.4f}"
+
+
+def _probability_coverage(group: dict[str, Any]) -> float | None:
+    value = group.get("probability_coverage")
+    if value is not None:
+        return float(value)
+    if group.get("brier") is not None or group.get("nll") is not None or group.get("ece_10") is not None:
+        return 1.0
+    return None

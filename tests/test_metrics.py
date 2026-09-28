@@ -79,3 +79,62 @@ def test_noul_and_score_metrics_exist() -> None:
     out = summarize(rows)
     assert out["groups"]["primitive:noul"]["brier"] == pytest.approx(0.01)
     assert out["groups"]["primitive:score"]["mae_expected_score"] == pytest.approx(0.2)
+
+
+def test_classification_only_rows_do_not_fabricate_calibration() -> None:
+    rows = [
+        {
+            "status": "ok",
+            "case_id": "c",
+            "primitive": "choice",
+            "domain": "d",
+            "gold": "a",
+            "prediction": "a",
+            "correct": True,
+            "probabilities": None,
+            "timing_ms": 1.0,
+            "provider_cost_usd": 0.0,
+            "estimated_local_cost_usd": None,
+        },
+        {
+            "status": "ok",
+            "case_id": "n",
+            "primitive": "noul",
+            "domain": "d",
+            "gold": True,
+            "prediction": True,
+            "correct": True,
+            "probability_yes": None,
+            "probabilities": None,
+            "timing_ms": 1.0,
+            "provider_cost_usd": 0.0,
+            "estimated_local_cost_usd": None,
+        },
+        {
+            "status": "ok",
+            "case_id": "s",
+            "primitive": "score",
+            "domain": "d",
+            "gold": 2,
+            "prediction": 1,
+            "correct": False,
+            "probabilities": None,
+            "score_levels": 5,
+            "timing_ms": 1.0,
+            "provider_cost_usd": 0.0,
+            "estimated_local_cost_usd": None,
+        },
+    ]
+    out = summarize(rows)
+    choice = out["groups"]["primitive:choice"]
+    noul = out["groups"]["primitive:noul"]
+    score = out["groups"]["primitive:score"]
+    assert choice["accuracy"] == 1.0
+    assert choice["brier"] is None
+    assert choice["probability_coverage"] == 0.0
+    assert noul["accuracy"] == 1.0
+    assert noul["nll"] is None
+    assert noul["probability_coverage"] == 0.0
+    assert score["mae_selected_score"] == 1.0
+    assert score["mae_expected_score"] is None
+    assert score["probability_coverage"] == 0.0

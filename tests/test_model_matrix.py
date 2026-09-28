@@ -8,7 +8,8 @@ ROOT = Path(__file__).resolve().parents[1]
 
 def test_primary_model_matrix_has_only_active_models() -> None:
     models = load_models(ROOT / "configs/models.yaml")
-    assert set(models) == {"jev", "bosun", "decider", "semif"}
+    assert {"jev", "bosun", "decider", "semif"} <= set(models)
+    assert {"luna-structured", "luna-classifier"} <= set(models)
     assert "jevk5" not in models
     assert "autojev" not in models
 

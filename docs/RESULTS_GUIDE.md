@@ -9,6 +9,7 @@ Do not publish only one accuracy number. For each model, retain the complete run
 - benchmark revision plus corpus/suite hashes;
 - overall and per-primitive accuracy;
 - Brier, NLL, and ECE;
+- probability coverage when a provider does not expose a complete distribution for every case;
 - Score within-1 accuracy, MAE, and quadratic weighted kappa;
 - p50/p95 latency and concurrency;
 - total provider cost and mean cost/request where applicable;
@@ -30,5 +31,7 @@ report.md
 ```
 
 `results.jsonl` is the source of truth. Reports and comparisons can then be regenerated without repeating paid hosted inference.
+
+For the GPT-6 Luna post-v1 experiments, preserve OpenRouter's resolved model/provider identity and request-reported cost in the raw rows. The frozen protocol is in [LUNA_EXPERIMENTS.md](LUNA_EXPERIMENTS.md); the canonical run IDs and published comparison are in [LUNA_VS_JEV.md](LUNA_VS_JEV.md).
 
 When comparing models, keep quality, calibration, latency, throughput, deployment requirements, and cost as separate axes. Do not collapse them into an arbitrary composite score.

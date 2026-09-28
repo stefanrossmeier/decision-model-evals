@@ -47,6 +47,8 @@ The subsets are deterministic and checked in. Do not tune prompts or adapters ag
 - negative log likelihood of the gold option;
 - 10-bin expected calibration error using top-option confidence.
 
+When a provider returns only a class and no defensible probability distribution, accuracy/F1 remain valid but Brier/NLL/ECE are left unavailable. The harness records probability coverage rather than converting a hard class into a fake one-hot distribution.
+
 ### Noul
 
 - threshold accuracy at 0.5;
@@ -57,6 +59,8 @@ The subsets are deterministic and checked in. Do not tune prompts or adapters ag
 
 Noul is evaluated as a probability first; threshold accuracy is only one view.
 
+Classification-only providers may return a boolean without `probability_yes`; in that case accuracy/F1 are still reported and probability metrics are omitted.
+
 ### Score
 
 - exact class accuracy using the most probable rubric level when probabilities are available;
@@ -64,6 +68,8 @@ Noul is evaluated as a probability first; threshold accuracy is only one view.
 - mean absolute error of the model's expected/fractional score;
 - quadratic weighted kappa;
 - multiclass Brier/NLL/ECE over score levels when probabilities are available.
+
+The harness also reports MAE of the selected discrete Score level. Expected-score MAE is only calculated when an actual level distribution is available.
 
 ## Timing
 
@@ -76,6 +82,8 @@ A fair publication should identify hardware, backend, concurrency, warm/cold con
 ## Cost
 
 Hosted provider cost is taken from the response when available. For Jev through OpenRouter, current responses can include `usage.cost`; this is preferred over reconstructing cost from a price page after the fact.
+
+If a hosted API exposes token usage but not request-level billed dollars, a provider adapter may calculate cost from those usage counters and a pricing snapshot stored in the run's model configuration. Such reconstructed cost must be documented as such and must not silently use current web pricing when regenerating an old report.
 
 Local models have **provider cost = $0**, not "cost = $0". If `LOCAL_COMPUTE_USD_PER_HOUR` or `--local-usd-per-hour` is supplied, the harness also records a simple modeled compute cost based on request wall time. This is explicitly labeled an estimate and is never substituted for provider cost.
 
@@ -95,6 +103,6 @@ Each run records:
 - provider/deployment type;
 - concurrency, retries, timeout, and local cost assumption;
 - operating system, CPU architecture, Python version, and `nvidia-smi` identity when available;
-- raw response, probabilities, token metadata, provider cost, and latency per case.
+- raw response, probabilities, token metadata (including cache/reasoning counters when exposed), provider cost plus its basis, and latency per case.
 
 Raw `results.jsonl` is the source of truth. Reports are derived artifacts.

@@ -208,3 +208,7 @@ The repository intentionally ignores `results/*/` by default. For a public bench
 The v1 hardware manifest records architecture/OS but not the exact Apple chip or memory size. Future performance publications should capture those fields before making cross-machine claims.
 
 See [METHODOLOGY.md](METHODOLOGY.md) for metric definitions and [RESULTS_GUIDE.md](RESULTS_GUIDE.md) for publication requirements.
+
+## Post-v1 GPT-6 Luna comparison
+
+The original four-model v1 table above remains frozen. Two later GPT-6 Luna experiments reused the same 5,760-case corpus without changing any cases or gold labels. The direct Structured Outputs mode scored **73.12%** overall and the explicit `A/B/C/...` classifier mode **73.14%**, compared with Jev's existing **74.50%** result. Their full quality, prompt design, paired statistics, provider cost, and dedicated latency/throughput measurements are reported separately in [LUNA_VS_JEV.md](LUNA_VS_JEV.md).

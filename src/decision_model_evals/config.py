@@ -2,6 +2,7 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 from pathlib import Path
+from typing import Any
 import os
 import yaml
 
@@ -15,6 +16,8 @@ class ModelConfig:
     api_key_env: str | None
     deployment: str
     description: str
+    parameters: dict[str, Any] | None = None
+    pricing: dict[str, Any] | None = None
 
 
 def _resolve_env(raw: dict, key: str, default_key: str | None = None) -> str:
@@ -45,5 +48,7 @@ def load_models(path: Path) -> dict[str, ModelConfig]:
             api_key_env=item.get("api_key_env"),
             deployment=str(item.get("deployment", "unknown")),
             description=str(item.get("description", "")),
+            parameters=dict(item.get("parameters") or {}) or None,
+            pricing=dict(item.get("pricing") or {}) or None,
         )
     return result

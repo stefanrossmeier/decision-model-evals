@@ -34,6 +34,7 @@ def test_parse_choice() -> None:
     assert result.probabilities == {"a": 0.2, "b": 0.8}
     assert result.input_tokens == 10
     assert result.provider_cost_usd == pytest.approx(0.0001)
+    assert result.provider_cost_basis == "provider_reported"
 
 
 def test_parse_noul() -> None:

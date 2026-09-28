@@ -39,6 +39,30 @@ Check configuration and run the cheap validation suites:
 
 Jev does not require a local server.
 
+### GPT-6 Luna classification experiments
+
+These are post-v1 comparators against the same frozen corpus, not replacements for the original four-model result. They use the same OpenRouter credential as Jev:
+
+```text
+OPENROUTER_API_KEY=...
+```
+
+There are two fixed inference modes:
+
+```bash
+./scripts/check-model luna-structured
+./scripts/probe luna-structured
+./scripts/smoke luna-structured
+
+./scripts/check-model luna-classifier
+./scripts/probe luna-classifier
+./scripts/smoke luna-classifier
+```
+
+Both use OpenRouter model `openai/gpt-6-luna`, reasoning effort `none`, seed `0`, provider pinning to OpenAI, and no few-shot examples. `luna-structured` asks directly for the legal semantic decision. `luna-classifier` maps legal decisions to `A/B/C/...` labels before classification. OpenRouter currently does not advertise temperature or token-logprob support for GPT-6 Luna, so neither run exposes calibration probabilities.
+
+See [LUNA_EXPERIMENTS.md](LUNA_EXPERIMENTS.md) before running `full`.
+
 ### Bosun
 
 ```bash

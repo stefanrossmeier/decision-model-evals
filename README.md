@@ -43,6 +43,27 @@ Two initially selected models were removed from the primary matrix:
 
 Their exclusion is about **deployment practicality, not model quality**. See [docs/EXCLUDED_MODELS.md](docs/EXCLUDED_MODELS.md).
 
+## Experimental general-LLM comparators
+
+The frozen v1 corpus can also be used to test whether a cheap general-purpose LLM can reproduce specialized decision-model behavior without changing the benchmark. Two GPT-6 Luna configurations are included as **post-v1 experiments**, not retroactively folded into the original four-model headline table:
+
+- `luna-structured` — `openai/gpt-6-luna` through OpenRouter, reasoning `none`, seed `0`, strict Structured Outputs over the original semantic decision values;
+- `luna-classifier` — the same OpenRouter model/settings, but with an explicit `A/B/C/...` verbalizer to test closed-label classifier framing.
+
+Neither experiment uses few-shot examples or corpus/domain-specific prompt tuning. OpenRouter currently does not advertise temperature or token-logprob parameters for GPT-6 Luna, so these OpenRouter-only runs do not claim `temperature: 0` or calibration probabilities.
+
+Both full experiments have now been run on the unchanged 5,760-case corpus:
+
+| Post-v1 comparator | Overall | Choice | Noul | Score exact | Observed provider $ / 1M decisions |
+|---|---:|---:|---:|---:|---:|
+| Jev 1.13 reference | **74.50%** | **95.57%** | **86.88%** | **41.04%** | **$17.20** |
+| GPT-6 Luna — structured | 73.12% | 94.74% | 85.26% | 39.38% | $27.37 |
+| GPT-6 Luna — classifier | 73.14% | 95.31% | 85.26% | 38.85% | $29.67 |
+
+The direct Structured Outputs prompt finished **1.37 percentage points** behind Jev overall; the explicit classifier prompt finished **1.35 points** behind. The two Luna prompt styles differed by only one net correct case across all 5,760 decisions, although they disagreed on many individual cases. Dedicated perf runs measured Luna at roughly 0.9–1.0 s median request latency versus roughly 0.3 s for Jev, with important provider-time and long-tail caveats.
+
+See [docs/LUNA_VS_JEV.md](docs/LUNA_VS_JEV.md) for the full quality, paired-statistics, cost, prompt, latency, throughput, and reproducibility analysis, and [docs/LUNA_EXPERIMENTS.md](docs/LUNA_EXPERIMENTS.md) for the frozen experiment protocol.
+
 ## Quick start
 
 Requirements: macOS or Linux, Python 3.11+, Git, and [`uv`](https://docs.astral.sh/uv/).
@@ -84,7 +105,7 @@ See [docs/CORPUS.md](docs/CORPUS.md) and [docs/METHODOLOGY.md](docs/METHODOLOGY.
 
 ## What a run records
 
-Each raw case retains the decision, available probability distribution, correctness, client-observed latency, retries/errors, resolved model/provider, provider timing where exposed, token usage where exposed, billed hosted cost where exposed, and the raw provider response.
+Each raw case retains the decision, available probability distribution, correctness, client-observed latency, retries/errors, resolved model/provider, provider timing where exposed, input/output/cached/cache-write/reasoning token usage where exposed, provider cost plus its basis, and the raw provider response.
 
 Each run also records corpus/suite hashes, benchmark revision, concurrency, timeout/retry settings, and a hardware snapshot. `results.jsonl` is the source of truth; `summary.json` and `report.md` are derived artifacts.
 
@@ -122,6 +143,8 @@ See [docs/CORPUS.md](docs/CORPUS.md) and [docs/METHODOLOGY.md](docs/METHODOLOGY.
 - [Excluded models](docs/EXCLUDED_MODELS.md)
 - [Licensing/admission policy](docs/LICENSING.md)
 - [Results and publication guide](docs/RESULTS_GUIDE.md)
+- [GPT-6 Luna classification experiments](docs/LUNA_EXPERIMENTS.md)
+- [GPT-6 Luna vs. Jev comparison](docs/LUNA_VS_JEV.md)
 
 ## Validation
 

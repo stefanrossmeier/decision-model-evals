@@ -29,3 +29,33 @@ models:
     endpoint: http://127.0.0.1:8012/v1/systemone
     deployment: local
     description: SemIf direct option-logit scorer over pinned Qwen3.5-4B
+
+  luna-structured:
+    provider: openrouter_structured_classifier
+    model: openai/gpt-6-luna
+    endpoint: https://openrouter.ai/api/v1/chat/completions
+    api_key_env: OPENROUTER_API_KEY
+    deployment: hosted
+    description: GPT-6 Luna via OpenRouter with reasoning none and strict semantic Structured Outputs
+    parameters:
+      reasoning_effort: none
+      seed: 0
+      max_tokens: 32
+      provider_only: [OpenAI]
+      allow_fallbacks: false
+      require_parameters: true
+
+  luna-classifier:
+    provider: openrouter_verbalizer_classifier
+    model: openai/gpt-6-luna
+    endpoint: https://openrouter.ai/api/v1/chat/completions
+    api_key_env: OPENROUTER_API_KEY
+    deployment: hosted
+    description: GPT-6 Luna via OpenRouter using an abstract A/B/C verbalizer classifier
+    parameters:
+      reasoning_effort: none
+      seed: 0
+      max_tokens: 16
+      provider_only: [OpenAI]
+      allow_fallbacks: false
+      require_parameters: true

@@ -66,6 +66,7 @@ def parse_systemone_response(raw: dict[str, Any], case: Case) -> DecisionResult:
             raise ValueError(f"score response has no score: {answer!r}")
         prediction = float(score)
 
+    reported_cost = usage.get("cost", usage.get("cost_usd"))
     return DecisionResult(
         raw=raw,
         model=_string_or_none(raw.get("model")),
@@ -75,7 +76,8 @@ def parse_systemone_response(raw: dict[str, Any], case: Case) -> DecisionResult:
         probability_yes=probability_yes,
         input_tokens=_int_or_none(usage.get("input_tokens", answer.get("input_tokens"))),
         output_tokens=_int_or_none(usage.get("output_tokens")),
-        provider_cost_usd=_float_or_none(usage.get("cost", usage.get("cost_usd"))),
+        provider_cost_usd=_float_or_none(reported_cost),
+        provider_cost_basis="provider_reported" if reported_cost is not None else None,
         provider_latency_ms=_first_float(
             raw.get("elapsedMs"), raw.get("elapsed_ms"), raw.get("latency_ms"), usage.get("elapsed_ms")
         ),

@@ -13,6 +13,8 @@ The v1 matrix contains four models:
 
 Two initially selected models were later removed because their tested deployment paths did not fit the target hardware class. See [EXCLUDED_MODELS.md](EXCLUDED_MODELS.md).
 
+Two additional entries in `configs/models.yaml` are **post-v1 GPT-6 Luna experiments**, not members of the original primary matrix. They reuse the frozen v1 corpus to test a cheap general-purpose LLM under two classification inference strategies. See [LUNA_EXPERIMENTS.md](LUNA_EXPERIMENTS.md).
+
 Upstream details below were checked during the v1 benchmark work in September 2026. Licenses are upstream-published terms, not legal advice.
 
 ## Jev 1.13 (`jev`)
@@ -26,6 +28,20 @@ Upstream details below were checked during the v1 benchmark work in September 20
 - Cost: use provider-reported billing from each run rather than reconstructing historic cost from a later price page.
 
 Jev is a hosted service entry. The project does not claim a downloadable Jev weight license or local deployment path.
+
+## GPT-6 Luna experiments (`luna-structured`, `luna-classifier`)
+
+- API/model: OpenRouter Chat Completions API with `openai/gpt-6-luna`.
+- Authentication: `OPENROUTER_API_KEY`.
+- Deployment: hosted through OpenRouter, pinned to the OpenAI provider with fallbacks disabled.
+- Fixed supported controls: reasoning effort `none`, seed `0`, strict Structured Outputs, no few-shot examples.
+- `luna-structured`: strict JSON Schema constrains the selected Choice/Noul/Score value directly.
+- `luna-classifier`: maps legal outputs to `A/B/C/...` and uses a strict enum schema for the selected class label before mapping back to the original value.
+- OpenRouter's current GPT-6 Luna endpoint metadata does not advertise `temperature`, `logprobs`, or `top_logprobs`; these OpenRouter-only experiments therefore do not claim temperature-zero sampling or model probability distributions.
+- Purpose: test whether a low-cost general LLM, deliberately invoked as a classifier, can approach the existing Jev result without changing the corpus.
+- Cost: use OpenRouter's request-reported `usage.cost` when available, preserving the same provider-reported cost basis used for Jev.
+
+These entries were added after the original v1 four-model benchmark. Their results should be reported alongside, not silently inserted into, the historical headline table. Both full runs are now complete: `luna-structured` scored **73.12%** and `luna-classifier` **73.14%**, versus the existing Jev result of **74.50%** on the same frozen corpus. See [LUNA_VS_JEV.md](LUNA_VS_JEV.md) for the comparison and performance caveats.
 
 ## Bosun v3.1 0.6B (`bosun`)
 

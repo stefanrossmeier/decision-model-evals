@@ -1,0 +1,560 @@
+{
+  "counts": {
+    "error_rate": 0.0,
+    "errors": 0,
+    "total": 5760,
+    "valid": 5760
+  },
+  "errors": [],
+  "groups": {
+    "domain:access_governance": {
+      "accuracy": 0.7138888888888889,
+      "accuracy_ci95": [
+        0.6651376371691523,
+        0.7581236384951288
+      ],
+      "cache_write_tokens": 0,
+      "cached_input_tokens": 0,
+      "estimated_local_cost_usd": 0.0,
+      "input_tokens": 83466,
+      "latency_ms": {
+        "mean": 981.2126839106592,
+        "p50": 921.0925420338754,
+        "p90": 1195.4088082886308,
+        "p95": 1435.9616080037085,
+        "p99": 2149.294672284741
+      },
+      "mean_provider_cost_usd": 2.9851666666666667e-05,
+      "n": 360,
+      "output_tokens": 4800,
+      "provider_cost_basis": "provider_reported",
+      "provider_cost_per_1000_usd": 0.029851666666666648,
+      "provider_cost_per_1m_usd": 29.85166666666665,
+      "provider_cost_usd": 0.010746599999999993,
+      "reasoning_tokens": 0
+    },
+    "domain:agent_security": {
+      "accuracy": 0.7916666666666666,
+      "accuracy_ci95": [
+        0.7467443236444321,
+        0.8304301431704967
+      ],
+      "cache_write_tokens": 0,
+      "cached_input_tokens": 0,
+      "estimated_local_cost_usd": 0.0,
+      "input_tokens": 95634,
+      "latency_ms": {
+        "mean": 1072.9109101736362,
+        "p50": 1022.4887920194305,
+        "p90": 1229.0455170092173,
+        "p95": 1424.6396163536704,
+        "p99": 2663.14870715898
+      },
+      "mean_provider_cost_usd": 3.323166666666667e-05,
+      "n": 360,
+      "output_tokens": 4800,
+      "provider_cost_basis": "provider_reported",
+      "provider_cost_per_1000_usd": 0.03323166666666664,
+      "provider_cost_per_1m_usd": 33.231666666666634,
+      "provider_cost_usd": 0.011963399999999989,
+      "reasoning_tokens": 0
+    },
+    "domain:compliance": {
+      "accuracy": 0.6777777777777778,
+      "accuracy_ci95": [
+        0.6278450871085084,
+        0.7239564926644007
+      ],
+      "cache_write_tokens": 0,
+      "cached_input_tokens": 0,
+      "estimated_local_cost_usd": 0.0,
+      "input_tokens": 80562,
+      "latency_ms": {
+        "mean": 1093.7652567121809,
+        "p50": 960.0859585043509,
+        "p90": 1227.7590705372859,
+        "p95": 1433.1261627899949,
+        "p99": 2520.8422544779078
+      },
+      "mean_provider_cost_usd": 2.9045e-05,
+      "n": 360,
+      "output_tokens": 4800,
+      "provider_cost_basis": "provider_reported",
+      "provider_cost_per_1000_usd": 0.029045000000000022,
+      "provider_cost_per_1m_usd": 29.045000000000023,
+      "provider_cost_usd": 0.010456200000000008,
+      "reasoning_tokens": 0
+    },
+    "domain:content_ops": {
+      "accuracy": 0.775,
+      "accuracy_ci95": [
+        0.7290908221453216,
+        0.815102246565897
+      ],
+      "cache_write_tokens": 0,
+      "cached_input_tokens": 0,
+      "estimated_local_cost_usd": 0.0,
+      "input_tokens": 79530,
+      "latency_ms": {
+        "mean": 1054.2020316046546,
+        "p50": 982.3405834904406,
+        "p90": 1226.3668831146788,
+        "p95": 1330.5654976022197,
+        "p99": 2466.183437519358
+      },
+      "mean_provider_cost_usd": 2.8758333333333332e-05,
+      "n": 360,
+      "output_tokens": 4800,
+      "provider_cost_basis": "provider_reported",
+      "provider_cost_per_1000_usd": 0.028758333333333313,
+      "provider_cost_per_1m_usd": 28.75833333333331,
+      "provider_cost_usd": 0.010352999999999992,
+      "reasoning_tokens": 0
+    },
+    "domain:customer_support": {
+      "accuracy": 0.8027777777777778,
+      "accuracy_ci95": [
+        0.7585709114291452,
+        0.8405911541215905
+      ],
+      "cache_write_tokens": 0,
+      "cached_input_tokens": 0,
+      "estimated_local_cost_usd": 0.0,
+      "input_tokens": 84198,
+      "latency_ms": {
+        "mean": 1090.8317541583933,
+        "p50": 1003.0244789959397,
+        "p90": 1334.153049689485,
+        "p95": 1750.6825874676015,
+        "p99": 2769.8788387706863
+      },
+      "mean_provider_cost_usd": 3.0055e-05,
+      "n": 360,
+      "output_tokens": 4800,
+      "provider_cost_basis": "provider_reported",
+      "provider_cost_per_1000_usd": 0.030054999999999978,
+      "provider_cost_per_1m_usd": 30.05499999999998,
+      "provider_cost_usd": 0.010819799999999992,
+      "reasoning_tokens": 0
+    },
+    "domain:data_platform": {
+      "accuracy": 0.7777777777777778,
+      "accuracy_ci95": [
+        0.7320261727127886,
+        0.8176637956823818
+      ],
+      "cache_write_tokens": 0,
+      "cached_input_tokens": 0,
+      "estimated_local_cost_usd": 0.0,
+      "input_tokens": 83454,
+      "latency_ms": {
+        "mean": 1046.3407918057378,
+        "p50": 983.6019165231846,
+        "p90": 1329.314704472199,
+        "p95": 1438.9651517674802,
+        "p99": 2417.502095259849
+      },
+      "mean_provider_cost_usd": 2.9848333333333334e-05,
+      "n": 360,
+      "output_tokens": 4800,
+      "provider_cost_basis": "provider_reported",
+      "provider_cost_per_1000_usd": 0.02984833333333331,
+      "provider_cost_per_1m_usd": 29.84833333333331,
+      "provider_cost_usd": 0.010745399999999992,
+      "reasoning_tokens": 0
+    },
+    "domain:ecommerce": {
+      "accuracy": 0.6527777777777778,
+      "accuracy_ci95": [
+        0.6022190573150905,
+        0.7001104253022532
+      ],
+      "cache_write_tokens": 0,
+      "cached_input_tokens": 0,
+      "estimated_local_cost_usd": 0.0,
+      "input_tokens": 82614,
+      "latency_ms": {
+        "mean": 998.3449843440516,
+        "p50": 926.1770205048379,
+        "p90": 1127.2165040718392,
+        "p95": 1228.6366083659232,
+        "p99": 2234.8323440167637
+      },
+      "mean_provider_cost_usd": 2.9615e-05,
+      "n": 360,
+      "output_tokens": 4800,
+      "provider_cost_basis": "provider_reported",
+      "provider_cost_per_1000_usd": 0.02961500000000003,
+      "provider_cost_per_1m_usd": 29.615000000000034,
+      "provider_cost_usd": 0.010661400000000012,
+      "reasoning_tokens": 0
+    },
+    "domain:finance_ops": {
+      "accuracy": 0.7694444444444445,
+      "accuracy_ci95": [
+        0.7232281120325106,
+        0.8099711573108046
+      ],
+      "cache_write_tokens": 0,
+      "cached_input_tokens": 0,
+      "estimated_local_cost_usd": 0.0,
+      "input_tokens": 80526,
+      "latency_ms": {
+        "mean": 1053.2823726788693,
+        "p50": 944.2495419934858,
+        "p90": 1234.893137495965,
+        "p95": 1536.3214705488645,
+        "p99": 2765.4577547719236
+      },
+      "mean_provider_cost_usd": 2.9035e-05,
+      "n": 360,
+      "output_tokens": 4800,
+      "provider_cost_basis": "provider_reported",
+      "provider_cost_per_1000_usd": 0.02903499999999999,
+      "provider_cost_per_1m_usd": 29.03499999999999,
+      "provider_cost_usd": 0.010452599999999996,
+      "reasoning_tokens": 0
+    },
+    "domain:hr_ops": {
+      "accuracy": 0.6222222222222222,
+      "accuracy_ci95": [
+        0.5710974644349645,
+        0.6707661216589105
+      ],
+      "cache_write_tokens": 0,
+      "cached_input_tokens": 0,
+      "estimated_local_cost_usd": 0.0,
+      "input_tokens": 81234,
+      "latency_ms": {
+        "mean": 989.7631705318215,
+        "p50": 920.1583754911553,
+        "p90": 1127.4125128344167,
+        "p95": 1330.6453850935213,
+        "p99": 2531.969372241879
+      },
+      "mean_provider_cost_usd": 2.9231666666666667e-05,
+      "n": 360,
+      "output_tokens": 4800,
+      "provider_cost_basis": "provider_reported",
+      "provider_cost_per_1000_usd": 0.029231666666666687,
+      "provider_cost_per_1m_usd": 29.231666666666687,
+      "provider_cost_usd": 0.010523400000000007,
+      "reasoning_tokens": 0
+    },
+    "domain:it_operations": {
+      "accuracy": 0.6972222222222222,
+      "accuracy_ci95": [
+        0.6478834306698606,
+        0.74239644689071
+      ],
+      "cache_write_tokens": 0,
+      "cached_input_tokens": 0,
+      "estimated_local_cost_usd": 0.0,
+      "input_tokens": 82302,
+      "latency_ms": {
+        "mean": 1002.0870785031649,
+        "p50": 922.5397919944953,
+        "p90": 1202.9902502952611,
+        "p95": 1331.0309847438475,
+        "p99": 2239.2336292361206
+      },
+      "mean_provider_cost_usd": 2.9528333333333333e-05,
+      "n": 360,
+      "output_tokens": 4800,
+      "provider_cost_basis": "provider_reported",
+      "provider_cost_per_1000_usd": 0.02952833333333332,
+      "provider_cost_per_1m_usd": 29.528333333333315,
+      "provider_cost_usd": 0.010630199999999994,
+      "reasoning_tokens": 0
+    },
+    "domain:logistics": {
+      "accuracy": 0.6194444444444445,
+      "accuracy_ci95": [
+        0.5682787035251545,
+        0.6680879828847687
+      ],
+      "cache_write_tokens": 0,
+      "cached_input_tokens": 0,
+      "estimated_local_cost_usd": 0.0,
+      "input_tokens": 80766,
+      "latency_ms": {
+        "mean": 1067.5491405418143,
+        "p50": 941.782833513571,
+        "p90": 1143.205166613916,
+        "p95": 1435.7586729165632,
+        "p99": 2661.430905283196
+      },
+      "mean_provider_cost_usd": 2.9101666666666666e-05,
+      "n": 360,
+      "output_tokens": 4800,
+      "provider_cost_basis": "provider_reported",
+      "provider_cost_per_1000_usd": 0.02910166666666664,
+      "provider_cost_per_1m_usd": 29.10166666666664,
+      "provider_cost_usd": 0.01047659999999999,
+      "reasoning_tokens": 0
+    },
+    "domain:procurement": {
+      "accuracy": 0.8111111111111111,
+      "accuracy_ci95": [
+        0.7674730920289154,
+        0.8481796725736752
+      ],
+      "cache_write_tokens": 0,
+      "cached_input_tokens": 0,
+      "estimated_local_cost_usd": 0.0,
+      "input_tokens": 79458,
+      "latency_ms": {
+        "mean": 1148.6929965229745,
+        "p50": 986.6168125008699,
+        "p90": 1352.240137185437,
+        "p95": 1670.1000711647803,
+        "p99": 2852.9091919690927
+      },
+      "mean_provider_cost_usd": 2.8738333333333332e-05,
+      "n": 360,
+      "output_tokens": 4800,
+      "provider_cost_basis": "provider_reported",
+      "provider_cost_per_1000_usd": 0.028738333333333324,
+      "provider_cost_per_1m_usd": 28.738333333333326,
+      "provider_cost_usd": 0.010345799999999997,
+      "reasoning_tokens": 0
+    },
+    "domain:research": {
+      "accuracy": 0.6916666666666667,
+      "accuracy_ci95": [
+        0.6421483305517357,
+        0.7371377476409318
+      ],
+      "cache_write_tokens": 0,
+      "cached_input_tokens": 0,
+      "estimated_local_cost_usd": 0.0,
+      "input_tokens": 82290,
+      "latency_ms": {
+        "mean": 1036.7721694583047,
+        "p50": 945.9691455122083,
+        "p90": 1231.4659000141548,
+        "p95": 1434.0450440649875,
+        "p99": 2363.829726025579
+      },
+      "mean_provider_cost_usd": 2.9525e-05,
+      "n": 360,
+      "output_tokens": 4800,
+      "provider_cost_basis": "provider_reported",
+      "provider_cost_per_1000_usd": 0.02952500000000001,
+      "provider_cost_per_1m_usd": 29.52500000000001,
+      "provider_cost_usd": 0.010629000000000003,
+      "reasoning_tokens": 0
+    },
+    "domain:sales_ops": {
+      "accuracy": 0.7388888888888889,
+      "accuracy_ci95": [
+        0.6911632619847166,
+        0.7815701108351298
+      ],
+      "cache_write_tokens": 0,
+      "cached_input_tokens": 0,
+      "estimated_local_cost_usd": 0.0,
+      "input_tokens": 81990,
+      "latency_ms": {
+        "mean": 1102.081053940411,
+        "p50": 965.6345005205367,
+        "p90": 1299.649479240179,
+        "p95": 1535.7991291966755,
+        "p99": 2677.625737792121
+      },
+      "mean_provider_cost_usd": 2.9441666666666666e-05,
+      "n": 360,
+      "output_tokens": 4800,
+      "provider_cost_basis": "provider_reported",
+      "provider_cost_per_1000_usd": 0.029441666666666637,
+      "provider_cost_per_1m_usd": 29.44166666666664,
+      "provider_cost_usd": 0.01059899999999999,
+      "reasoning_tokens": 0
+    },
+    "domain:software_delivery": {
+      "accuracy": 0.7861111111111111,
+      "accuracy_ci95": [
+        0.7408486322495699,
+        0.8253320351974555
+      ],
+      "cache_write_tokens": 0,
+      "cached_input_tokens": 0,
+      "estimated_local_cost_usd": 0.0,
+      "input_tokens": 82074,
+      "latency_ms": {
+        "mean": 1046.455032208501,
+        "p50": 922.9014165175613,
+        "p90": 1195.565083384282,
+        "p95": 1433.6411478754599,
+        "p99": 2560.729803882423
+      },
+      "mean_provider_cost_usd": 2.9465e-05,
+      "n": 360,
+      "output_tokens": 4800,
+      "provider_cost_basis": "provider_reported",
+      "provider_cost_per_1000_usd": 0.02946499999999999,
+      "provider_cost_per_1m_usd": 29.46499999999999,
+      "provider_cost_usd": 0.010607399999999996,
+      "reasoning_tokens": 0
+    },
+    "domain:workflow_routing": {
+      "accuracy": 0.775,
+      "accuracy_ci95": [
+        0.7290908221453216,
+        0.815102246565897
+      ],
+      "cache_write_tokens": 0,
+      "cached_input_tokens": 0,
+      "estimated_local_cost_usd": 0.0,
+      "input_tokens": 84630,
+      "latency_ms": {
+        "mean": 1041.0881842751728,
+        "p50": 942.7996875019744,
+        "p90": 1228.8267706288025,
+        "p95": 1443.1849854619952,
+        "p99": 2434.564098761767
+      },
+      "mean_provider_cost_usd": 3.0175e-05,
+      "n": 360,
+      "output_tokens": 4800,
+      "provider_cost_basis": "provider_reported",
+      "provider_cost_per_1000_usd": 0.03017499999999997,
+      "provider_cost_per_1m_usd": 30.17499999999997,
+      "provider_cost_usd": 0.010862999999999989,
+      "reasoning_tokens": 0
+    },
+    "overall": {
+      "accuracy": 0.7314236111111111,
+      "accuracy_ci95": [
+        0.7198261085308066,
+        0.7427126373814508
+      ],
+      "cache_write_tokens": 0,
+      "cached_input_tokens": 0,
+      "estimated_local_cost_usd": 0.0,
+      "input_tokens": 1324728,
+      "latency_ms": {
+        "mean": 1051.5862257106467,
+        "p50": 938.054270518478,
+        "p90": 1228.7418451800477,
+        "p95": 1434.8083413671702,
+        "p99": 2559.537255432806
+      },
+      "mean_provider_cost_usd": 2.9665416666666666e-05,
+      "n": 5760,
+      "output_tokens": 76800,
+      "provider_cost_basis": "provider_reported",
+      "provider_cost_per_1000_usd": 0.029665416666666722,
+      "provider_cost_per_1m_usd": 29.665416666666726,
+      "provider_cost_usd": 0.17087280000000032,
+      "reasoning_tokens": 0
+    },
+    "primitive:choice": {
+      "accuracy": 0.953125,
+      "accuracy_ci95": [
+        0.9427318251944983,
+        0.96170860674557
+      ],
+      "brier": null,
+      "cache_write_tokens": 0,
+      "cached_input_tokens": 0,
+      "ece_10": null,
+      "estimated_local_cost_usd": 0.0,
+      "input_tokens": 485016,
+      "latency_ms": {
+        "mean": 1096.85337815381,
+        "p50": 979.2192080058157,
+        "p90": 1301.5882794978097,
+        "p95": 1638.1819419708336,
+        "p99": 2604.0419102500878
+      },
+      "macro_f1": 0.9521361687594286,
+      "mean_provider_cost_usd": 3.176125e-05,
+      "n": 1920,
+      "nll": null,
+      "output_tokens": 24960,
+      "probability_coverage": 0.0,
+      "probability_rows": 0,
+      "provider_cost_basis": "provider_reported",
+      "provider_cost_per_1000_usd": 0.031761250000000046,
+      "provider_cost_per_1m_usd": 31.761250000000043,
+      "provider_cost_usd": 0.06098160000000009,
+      "reasoning_tokens": 0
+    },
+    "primitive:noul": {
+      "accuracy": 0.8526041666666667,
+      "accuracy_ci95": [
+        0.8360435628917955,
+        0.8677566352960508
+      ],
+      "brier": null,
+      "cache_write_tokens": 0,
+      "cached_input_tokens": 0,
+      "ece_10": null,
+      "estimated_local_cost_usd": 0.0,
+      "input_tokens": 386736,
+      "latency_ms": {
+        "mean": 1068.295848460851,
+        "p50": 1022.9819789819885,
+        "p90": 1229.1203086089808,
+        "p95": 1401.0785353690153,
+        "p99": 2384.062878504628
+      },
+      "macro_f1": 0.851252877499616,
+      "mean_provider_cost_usd": 2.71425e-05,
+      "n": 1920,
+      "nll": null,
+      "output_tokens": 26880,
+      "probability_coverage": 0.0,
+      "probability_rows": 0,
+      "provider_cost_basis": "provider_reported",
+      "provider_cost_per_1000_usd": 0.027142500000000007,
+      "provider_cost_per_1m_usd": 27.142500000000005,
+      "provider_cost_usd": 0.05211360000000001,
+      "reasoning_tokens": 0
+    },
+    "primitive:score": {
+      "accuracy": 0.3885416666666667,
+      "accuracy_ci95": [
+        0.3669826940656401,
+        0.41054575141117056
+      ],
+      "brier": null,
+      "cache_write_tokens": 0,
+      "cached_input_tokens": 0,
+      "ece_10": null,
+      "estimated_local_cost_usd": 0.0,
+      "exact_accuracy": 0.3885416666666667,
+      "input_tokens": 452976,
+      "latency_ms": {
+        "mean": 989.6094505172792,
+        "p50": 920.2273754926864,
+        "p90": 1127.2374125081114,
+        "p95": 1349.9671955039926,
+        "p99": 2495.9726664220207
+      },
+      "mae_expected_score": null,
+      "mae_selected_score": 0.7557291666666667,
+      "mean_provider_cost_usd": 3.00925e-05,
+      "n": 1920,
+      "nll": null,
+      "output_tokens": 24960,
+      "probability_coverage": 0.0,
+      "probability_rows": 0,
+      "provider_cost_basis": "provider_reported",
+      "provider_cost_per_1000_usd": 0.03009250000000007,
+      "provider_cost_per_1m_usd": 30.092500000000072,
+      "provider_cost_usd": 0.05777760000000014,
+      "quadratic_weighted_kappa": 0.7111009020165835,
+      "reasoning_tokens": 0,
+      "within_1_accuracy": 0.865625
+    }
+  },
+  "model": "luna-classifier",
+  "run_id": "20260928T062221Z-luna-classifier-60e0d309",
+  "suite": "full",
+  "throughput_requests_per_second": 0.9474044129475291,
+  "wall_clock_finished_at": "2026-09-28T08:03:41.381167+00:00",
+  "wall_clock_seconds": 6079.76902079198,
+  "wall_clock_started_at": "2026-09-28T06:22:21.512519+00:00"
+}

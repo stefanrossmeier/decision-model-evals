@@ -16,24 +16,28 @@ def render_report(summary: dict[str, Any]) -> str:
         f"- Cases: {counts['total']} ({counts['valid']} valid, {counts['errors']} errors)",
         f"- Accuracy: {_pct(overall.get('accuracy'))}",
         f"- Provider cost: {_usd(overall.get('provider_cost_usd'))}",
+        f"- Provider cost basis: `{overall.get('provider_cost_basis') or 'not reported'}`",
         f"- Provider cost / 1M decisions at this case mix: {_usd(overall.get('provider_cost_per_1m_usd'))}",
         f"- Estimated local compute cost: {_usd(overall.get('estimated_local_cost_usd'))}",
         f"- p50 / p95 latency: {_num(_nested(overall, 'latency_ms', 'p50'))} / {_num(_nested(overall, 'latency_ms', 'p95'))} ms",
         f"- Suite throughput: {_num(summary.get('throughput_requests_per_second'))} requests/s",
+        f"- Input / output tokens: {_int(overall.get('input_tokens'))} / {_int(overall.get('output_tokens'))}",
+        f"- Cached input / cache-write / reasoning tokens: {_int(overall.get('cached_input_tokens'))} / {_int(overall.get('cache_write_tokens'))} / {_int(overall.get('reasoning_tokens'))}",
         "",
         "## Primitive results",
         "",
-        "| Primitive | n | Accuracy | Macro F1 | Brier | NLL | ECE-10 | p50 ms | p95 ms | Provider cost |",
-        "|---|---:|---:|---:|---:|---:|---:|---:|---:|---:|",
+        "| Primitive | n | Accuracy | Macro F1 | Prob. coverage | Brier | NLL | ECE-10 | p50 ms | p95 ms | Provider cost |",
+        "|---|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|",
     ]
     for primitive in ("choice", "noul", "score"):
         group = summary["groups"].get(f"primitive:{primitive}", {})
         lines.append(
-            "| {p} | {n} | {acc} | {f1} | {brier} | {nll} | {ece} | {p50} | {p95} | {cost} |".format(
+            "| {p} | {n} | {acc} | {f1} | {coverage} | {brier} | {nll} | {ece} | {p50} | {p95} | {cost} |".format(
                 p=primitive,
                 n=group.get("n", 0),
                 acc=_pct(group.get("accuracy")),
                 f1=_num(group.get("macro_f1")),
+                coverage=_pct(group.get("probability_coverage")),
                 brier=_num(group.get("brier")),
                 nll=_num(group.get("nll")),
                 ece=_num(group.get("ece_10")),
@@ -64,6 +68,7 @@ def render_report(summary: dict[str, Any]) -> str:
             "",
             f"- Exact accuracy: {_pct(score.get('exact_accuracy'))}",
             f"- Within ±1 accuracy: {_pct(score.get('within_1_accuracy'))}",
+            f"- MAE of selected score: {_num(score.get('mae_selected_score'))}",
             f"- MAE of expected score: {_num(score.get('mae_expected_score'))}",
             f"- Quadratic weighted kappa: {_num(score.get('quadratic_weighted_kappa'))}",
         ])
@@ -71,7 +76,7 @@ def render_report(summary: dict[str, Any]) -> str:
         "",
         "## Interpretation notes",
         "",
-        "Accuracy and calibration are reported separately from latency and cost. The project intentionally does not collapse them into a single winner score. Provider cost is the billed/request-reported amount when available; local models have zero provider cost. Estimated local compute cost is only populated when a machine-hour price was explicitly supplied for the run.",
+        "Accuracy and calibration are reported separately from latency and cost. The project intentionally does not collapse them into a single winner score. Probability coverage states how many cases exposed a complete usable probability distribution; calibration metrics are computed only on those cases. Provider cost is provider-reported when available or computed from recorded token usage and the pricing snapshot stored in the model configuration. Local models have zero provider cost. Estimated local compute cost is only populated when a machine-hour price was explicitly supplied for the run.",
         "",
     ])
     return "\n".join(lines)
@@ -103,3 +108,7 @@ def _num(value: Any) -> str:
 
 def _usd(value: Any) -> str:
     return "—" if value is None else f"${float(value):.6f}"
+
+
+def _int(value: Any) -> str:
+    return "—" if value is None else f"{int(value):,}"

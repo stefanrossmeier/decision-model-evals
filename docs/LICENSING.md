@@ -19,6 +19,8 @@ A hosted model does not need downloadable weights. It should have a public servi
 
 Jev is in this category: the benchmark calls the pinned OpenRouter model ID and records the provider-resolved model and exact billed cost returned by the API. This repository makes no claim about a downloadable Jev weight license.
 
+The GPT-6 Luna experiments are also hosted-service entries. They access `openai/gpt-6-luna` through OpenRouter; this repository does not redistribute model weights or assert a downloadable model license.
+
 ## What this policy does not establish
 
 These checks are necessary for the project's enterprise-oriented candidate matrix, but they are **not legal advice or enterprise legal approval**. A permissive artifact license does not prove the provenance of every training datum, and hosted service terms can change independently of this repository.
