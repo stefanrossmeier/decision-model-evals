@@ -1,0 +1,25 @@
+#!/usr/bin/env bash
+set -euo pipefail
+source "$(dirname "$0")/_common.sh"
+model="${1:-}"
+case "$model" in
+  bosun)
+    exe="$MODELS_DIR/bosun/.venv/bin/jev-compatible-server"; [[ -x "$exe" ]] || { echo "run scripts/setup-model bosun first" >&2; exit 2; }
+    registry="$MODELS_DIR/bosun/registry/jev-transformers-registry.json"; [[ -f "$registry" ]] || { echo "Bosun registry missing; rerun setup" >&2; exit 2; }
+    export HF_HOME="$MODELS_DIR/bosun/hf-cache" DECISION_REGISTRY="$registry"
+    echo "starting Bosun on http://127.0.0.1:8000/v1/systemone" >&2; exec "$exe" --model bosun-v3.1-0.6b;;
+  decider)
+    py="$MODELS_DIR/decider/.venv/bin/python"; [[ -x "$py" ]] || { echo "run scripts/setup-model decider first" >&2; exit 2; }
+    export HF_HOME="$MODELS_DIR/decider/hf-cache"
+    DECIDER_MODEL="$("$py" -c 'from huggingface_hub import snapshot_download; print(snapshot_download("Mapika/decider-4b", revision="eb5fbdfc9448473ec25e399882912863afbdb70e"))')"
+    export DECIDER_MODEL
+    echo "starting Decider v2.1 on http://127.0.0.1:8011/v1/systemone (auto: CUDA, MPS, CPU)" >&2
+    exec "$py" -m uvicorn decider.serve:app --host 127.0.0.1 --port 8011;;
+  semif)
+    py="$MODELS_DIR/semif/.venv/bin/python"; [[ -x "$py" ]] || { echo "run scripts/setup-model semif first" >&2; exit 2; }
+    export HF_HOME="$MODELS_DIR/semif/hf-cache"
+    device="${SEMIF_DEVICE:-auto}"
+    echo "starting SemIf adapter on http://127.0.0.1:8012/v1/systemone (device=$device)" >&2
+    exec "$py" "$ROOT/scripts/semif-server.py" --device "$device";;
+  *) echo "usage: scripts/start-model {bosun|decider|semif}" >&2; exit 2;;
+esac

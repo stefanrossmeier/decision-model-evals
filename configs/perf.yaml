@@ -1,0 +1,8 @@
+# Recommended repeatability/performance settings. The CLI accepts these values as flags;
+# this file is documentation/configuration for scripted runs.
+perf:
+  warmup_cases: 12
+  repetitions: 3
+  concurrency_levels: [1, 4, 16]
+  timeout_seconds: 120
+  retries: 1

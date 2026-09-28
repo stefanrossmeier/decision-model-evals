@@ -1,0 +1,36 @@
+{
+  "benchmark_revision": "67f5c2cf35a9b610afc15ea8ace6a598003c8632",
+  "corpus": {
+    "case_count": 180,
+    "path": "datasets/corpus.jsonl",
+    "sha256": "9e9a98f43406e99643c7eaf5dee7aa56d5d62c7b9163f9c1df878f178e3e3ef2"
+  },
+  "execution": {
+    "concurrency": 1,
+    "local_usd_per_hour": null,
+    "retries": 1,
+    "retry_backoff_s": 1.0,
+    "timeout_s": 120.0
+  },
+  "hardware": {
+    "machine": "arm64",
+    "platform": "macOS-15.7.4-arm64-arm-64bit",
+    "processor": "arm",
+    "python": "3.11.16"
+  },
+  "model_config": {
+    "api_key_env": "OPENROUTER_API_KEY",
+    "deployment": "hosted",
+    "description": "TypeSafe Jev 1.13 through OpenRouter Decisions API",
+    "endpoint": "https://openrouter.ai/api/alpha/decisions",
+    "model": "typesafe/jev-1.13",
+    "name": "jev",
+    "provider": "openrouter_decisions"
+  },
+  "run_id": "20260927T104423Z-jev-b1cbcb5c",
+  "started_at": "2026-09-27T10:44:23.332296+00:00",
+  "suite": {
+    "path": "datasets/suites/perf.yaml",
+    "sha256": "6ff90edfd36a18dfcb0cd7f58158d3be4c493b1fc44f334bb4a2e8cefd3721dc"
+  }
+}

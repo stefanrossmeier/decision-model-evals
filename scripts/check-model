@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+set -euo pipefail
+source "$(dirname "$0")/_common.sh"
+model="${1:-}"
+case "$model" in
+  jev) [[ -f "$ROOT/.env" ]] && { set -a; source "$ROOT/.env"; set +a; }; [[ -n "${OPENROUTER_API_KEY:-}" ]] || { echo "error: OPENROUTER_API_KEY is not set" >&2; exit 2; }; echo "Jev configuration ready.";;
+  bosun) [[ -x "$MODELS_DIR/bosun/.venv/bin/jev-compatible-server" ]] && [[ -f "$MODELS_DIR/bosun/registry/jev-transformers-registry.json" ]] || { echo "error: run ./scripts/setup-model bosun" >&2; exit 2; }; echo "Bosun files ready.";;
+  decider) [[ -x "$MODELS_DIR/decider/.venv/bin/python" ]] && [[ -f "$MODELS_DIR/decider/REVISION.txt" ]] || { echo "error: run ./scripts/setup-model decider" >&2; exit 2; }; require_free_disk_gib "$MODELS_DIR" 9; echo "Decider runtime ready; first start downloads ~8.4 GB weights.";;
+  semif) [[ -x "$MODELS_DIR/semif/.venv/bin/python" ]] && [[ -f "$MODELS_DIR/semif/REVISION.txt" ]] || { echo "error: run ./scripts/setup-model semif" >&2; exit 2; }; require_free_disk_gib "$MODELS_DIR" 10; echo "SemIf runtime ready; first start downloads ~9.34 GB model repository payload.";;
+  *) echo "usage: scripts/check-model {jev|bosun|decider|semif}" >&2; exit 2;;
+esac

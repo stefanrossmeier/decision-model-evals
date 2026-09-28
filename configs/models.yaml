@@ -1,0 +1,31 @@
+models:
+  jev:
+    provider: openrouter_decisions
+    model: typesafe/jev-1.13
+    endpoint: https://openrouter.ai/api/alpha/decisions
+    api_key_env: OPENROUTER_API_KEY
+    deployment: hosted
+    description: TypeSafe Jev 1.13 through OpenRouter Decisions API
+
+  bosun:
+    provider: systemone_http
+    model: null
+    endpoint: http://127.0.0.1:8000/v1/systemone
+    deployment: local
+    description: Hanno Labs Bosun v3.1 0.6B local Jev-compatible server
+
+  decider:
+    provider: systemone_http
+    model: Mapika/decider-4b
+    endpoint_env: DECIDER_URL
+    endpoint: http://127.0.0.1:8011/v1/systemone
+    deployment: local
+    description: Mapika decider-4b v2.1 (Qwen3.5-4B-Base), native System One server
+
+  semif:
+    provider: systemone_http
+    model: Qwen/Qwen3.5-4B
+    endpoint_env: SEMIF_URL
+    endpoint: http://127.0.0.1:8012/v1/systemone
+    deployment: local
+    description: SemIf direct option-logit scorer over pinned Qwen3.5-4B

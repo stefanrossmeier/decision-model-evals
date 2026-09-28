@@ -1,0 +1,36 @@
+{
+  "benchmark_revision": "67f5c2cf35a9b610afc15ea8ace6a598003c8632",
+  "corpus": {
+    "case_count": 180,
+    "path": "datasets/corpus.jsonl",
+    "sha256": "9e9a98f43406e99643c7eaf5dee7aa56d5d62c7b9163f9c1df878f178e3e3ef2"
+  },
+  "execution": {
+    "concurrency": 4,
+    "local_usd_per_hour": null,
+    "retries": 1,
+    "retry_backoff_s": 1.0,
+    "timeout_s": 120.0
+  },
+  "hardware": {
+    "machine": "arm64",
+    "platform": "macOS-15.7.4-arm64-arm-64bit",
+    "processor": "arm",
+    "python": "3.11.16"
+  },
+  "model_config": {
+    "api_key_env": null,
+    "deployment": "local",
+    "description": "SemIf direct option-logit scorer over pinned Qwen3.5-4B",
+    "endpoint": "http://127.0.0.1:8012/v1/systemone",
+    "model": "Qwen/Qwen3.5-4B",
+    "name": "semif",
+    "provider": "systemone_http"
+  },
+  "run_id": "20260927T094812Z-semif-3fc2a72a",
+  "started_at": "2026-09-27T09:48:12.462923+00:00",
+  "suite": {
+    "path": "datasets/suites/perf.yaml",
+    "sha256": "6ff90edfd36a18dfcb0cd7f58158d3be4c493b1fc44f334bb4a2e8cefd3721dc"
+  }
+}

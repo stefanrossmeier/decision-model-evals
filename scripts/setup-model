@@ -1,0 +1,53 @@
+#!/usr/bin/env bash
+set -euo pipefail
+source "$(dirname "$0")/_common.sh"
+need_uv
+need git
+model="${1:-}"
+case "$model" in
+  bosun)
+    dir="$MODELS_DIR/bosun"; require_free_disk_gib "$MODELS_DIR" 3; hf_auth_hint
+    uv venv "$dir/.venv" --python 3.11
+    uv pip install --python "$dir/.venv/bin/python" 'jev-compatible-server[transformers]==0.1.1' 'huggingface_hub>=1.33,<3'
+    "$dir/.venv/bin/hf" download Hanno-Labs/bosun-v3.1-0.6b-GGUF jev-transformers-registry.json --local-dir "$dir/registry"
+    cat > "$dir/REVISION.txt" <<TXT
+runtime=jev-compatible-server==0.1.1
+model=Hanno-Labs/bosun-v3.1-0.6b
+registry=Hanno-Labs/bosun-v3.1-0.6b-GGUF/jev-transformers-registry.json
+TXT
+    ;;
+  decider)
+    dir="$MODELS_DIR/decider"; require_free_disk_gib "$MODELS_DIR" 12; hf_auth_hint
+    uv venv "$dir/.venv" --python 3.11
+    uv pip install --python "$dir/.venv/bin/python" 'decider-ai[serve]==1.4.0'
+    cat > "$dir/REVISION.txt" <<TXT
+runtime=decider-ai==1.4.0
+model=Mapika/decider-4b
+release=v2.1
+model_revision=eb5fbdfc9448473ec25e399882912863afbdb70e
+weights=bf16 (~8.4 GB)
+TXT
+    echo "Decider weights are downloaded on first start, not during setup." >&2
+    ;;
+  semif)
+    dir="$MODELS_DIR/semif"; require_free_disk_gib "$MODELS_DIR" 13; hf_auth_hint
+    if [[ ! -d "$dir/source/.git" ]]; then mkdir -p "$dir"; git clone https://github.com/TheoLeeCJ/SemIf-OpenJev.git "$dir/source"; fi
+    git -C "$dir/source" fetch --quiet origin
+    git -C "$dir/source" checkout --detach 1f2dea3
+    uv venv "$dir/.venv" --python 3.11
+    if [[ "$(uname -s)-$(uname -m)" == "Darwin-arm64" ]]; then
+      uv pip install --python "$dir/.venv/bin/python" -e "$dir/source[test,mlx]"
+    else
+      uv pip install --python "$dir/.venv/bin/python" -e "$dir/source[test]"
+    fi
+    cat > "$dir/REVISION.txt" <<TXT
+repository=$(git -C "$dir/source" rev-parse HEAD)
+model=Qwen/Qwen3.5-4B
+model_revision=851bf6e806efd8d0a36b00ddf55e13ccb7b8cd0a
+weights=bf16 (~9.34 GB repository payload)
+TXT
+    echo "SemIf weights are downloaded on first start, not during setup." >&2
+    ;;
+  *) echo "usage: scripts/setup-model {bosun|decider|semif}" >&2; exit 2;;
+esac
+echo "setup complete for $model"

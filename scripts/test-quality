@@ -1,0 +1,14 @@
+#!/usr/bin/env bash
+set -euo pipefail
+source "$(dirname "$0")/_common.sh"
+need_uv
+cd "$ROOT"
+uv run ruff check src tests tools
+uv run pytest
+uv run decision-evals validate
+uv run python tools/build_corpus.py >/tmp/decision-model-evals-build-corpus.out
+# The generator is deterministic; git diff is the strongest check when run in a clone.
+if git rev-parse --is-inside-work-tree >/dev/null 2>&1; then
+  git diff --exit-code -- datasets/corpus.jsonl datasets/suites
+fi
+cat /tmp/decision-model-evals-build-corpus.out

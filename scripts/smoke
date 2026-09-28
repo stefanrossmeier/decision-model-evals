@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+set -euo pipefail
+source "$(dirname "$0")/_common.sh"
+need_uv
+model="${1:-}"
+if [[ -z "$model" ]]; then
+  echo "usage: scripts/smoke {jev|bosun|decider|semif}" >&2
+  exit 2
+fi
+cd "$ROOT"
+exec uv run decision-evals run --model "$model" --suite smoke --retries 0 --concurrency 1

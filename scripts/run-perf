@@ -1,0 +1,16 @@
+#!/usr/bin/env bash
+set -euo pipefail
+source "$(dirname "$0")/_common.sh"
+need_uv
+model="${1:-}"
+if [[ -z "$model" ]]; then
+  echo "usage: scripts/run-perf MODEL [concurrency ...]" >&2
+  exit 2
+fi
+shift || true
+levels=("${@:-1 4 16}")
+cd "$ROOT"
+for c in ${levels[*]}; do
+  echo "== $model perf suite, concurrency=$c =="
+  uv run decision-evals run --model "$model" --suite perf --concurrency "$c" --retries 1
+done

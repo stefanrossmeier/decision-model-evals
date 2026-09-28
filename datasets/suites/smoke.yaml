@@ -1,0 +1,22 @@
+name: smoke
+description: '18-case cheap end-to-end smoke suite: six cases per primitive across six domains.'
+corpus_version: v1
+case_ids:
+- dmv1-workflow_routing-0074-choice
+- dmv1-workflow_routing-0104-noul
+- dmv1-workflow_routing-0042-score
+- dmv1-agent_security-0007-choice
+- dmv1-agent_security-0069-noul
+- dmv1-agent_security-0026-score
+- dmv1-customer_support-0103-choice
+- dmv1-customer_support-0039-noul
+- dmv1-customer_support-0041-score
+- dmv1-it_operations-0030-choice
+- dmv1-it_operations-0063-noul
+- dmv1-it_operations-0104-score
+- dmv1-research-0027-choice
+- dmv1-research-0052-noul
+- dmv1-research-0058-score
+- dmv1-compliance-0031-choice
+- dmv1-compliance-0013-noul
+- dmv1-compliance-0094-score

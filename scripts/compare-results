@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+set -euo pipefail
+source "$(dirname "$0")/_common.sh"
+need_uv
+if [[ "$#" -lt 2 ]]; then
+  echo "usage: scripts/compare-results RUN_DIR RUN_DIR [RUN_DIR ...]" >&2
+  exit 2
+fi
+cd "$ROOT"
+exec uv run decision-evals compare "$@"
