@@ -8,5 +8,6 @@ case "$model" in
   bosun) [[ -x "$MODELS_DIR/bosun/.venv/bin/jev-compatible-server" ]] && [[ -f "$MODELS_DIR/bosun/registry/jev-transformers-registry.json" ]] || { echo "error: run ./scripts/setup-model bosun" >&2; exit 2; }; echo "Bosun files ready.";;
   decider) [[ -x "$MODELS_DIR/decider/.venv/bin/python" ]] && [[ -f "$MODELS_DIR/decider/REVISION.txt" ]] || { echo "error: run ./scripts/setup-model decider" >&2; exit 2; }; require_free_disk_gib "$MODELS_DIR" 9; echo "Decider runtime ready; first start downloads ~8.4 GB weights.";;
   semif) [[ -x "$MODELS_DIR/semif/.venv/bin/python" ]] && [[ -f "$MODELS_DIR/semif/REVISION.txt" ]] || { echo "error: run ./scripts/setup-model semif" >&2; exit 2; }; require_free_disk_gib "$MODELS_DIR" 10; echo "SemIf runtime ready; first start downloads ~9.34 GB model repository payload.";;
-  *) echo "usage: scripts/check-model {jev|bosun|decider|semif|luna-structured|luna-classifier}" >&2; exit 2;;
+  julia1) [[ -x "$MODELS_DIR/julia1/.venv/bin/python" ]] && [[ -f "$MODELS_DIR/julia1/source/model.safetensors" ]] && [[ -f "$MODELS_DIR/julia1/REVISION.txt" ]] || { echo "error: run ./scripts/setup-model julia1" >&2; exit 2; }; echo "Julia 1 runtime and pinned ~550 MiB FP32 weights ready (CPU/CUDA).";;
+  *) echo "usage: scripts/check-model {jev|bosun|decider|semif|julia1|luna-structured|luna-classifier}" >&2; exit 2;;
 esac

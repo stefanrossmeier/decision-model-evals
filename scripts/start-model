@@ -21,5 +21,19 @@ case "$model" in
     device="${SEMIF_DEVICE:-auto}"
     echo "starting SemIf adapter on http://127.0.0.1:8012/v1/systemone (device=$device)" >&2
     exec "$py" "$ROOT/scripts/semif-server.py" --device "$device";;
-  *) echo "usage: scripts/start-model {bosun|decider|semif}" >&2; exit 2;;
+  julia1)
+    py="$MODELS_DIR/julia1/.venv/bin/python"; [[ -x "$py" ]] || { echo "run scripts/setup-model julia1 first" >&2; exit 2; }
+    checkpoint="$MODELS_DIR/julia1/source"; [[ -f "$checkpoint/model.safetensors" ]] || { echo "Julia 1 checkpoint missing; rerun setup" >&2; exit 2; }
+    export HF_HOME="$MODELS_DIR/julia1/hf-cache"
+    device="${JULIA_DEVICE:-}"
+    if [[ -z "$device" ]]; then
+      if have_nvidia_cuda; then device="cuda"; else device="cpu"; fi
+    fi
+    case "$device" in
+      cpu|cuda) ;;
+      *) echo "error: JULIA_DEVICE must be cpu or cuda; Julia's published runtime does not support MPS" >&2; exit 2;;
+    esac
+    echo "starting Julia 1 adapter on http://127.0.0.1:8013/v1/systemone (device=$device)" >&2
+    exec "$py" "$ROOT/scripts/julia-server.py" --checkpoint "$checkpoint" --device "$device";;
+  *) echo "usage: scripts/start-model {bosun|decider|semif|julia1}" >&2; exit 2;;
 esac

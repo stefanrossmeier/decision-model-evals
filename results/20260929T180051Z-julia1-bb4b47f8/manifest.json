@@ -1,0 +1,47 @@
+{
+  "benchmark_revision": "42bb8c152faf52a9011f153d627927f1abed4de5",
+  "corpus": {
+    "case_count": 180,
+    "path": "datasets/corpus.jsonl",
+    "sha256": "9e9a98f43406e99643c7eaf5dee7aa56d5d62c7b9163f9c1df878f178e3e3ef2"
+  },
+  "execution": {
+    "concurrency": 16,
+    "local_usd_per_hour": null,
+    "retries": 1,
+    "retry_backoff_s": 1.0,
+    "timeout_s": 120.0
+  },
+  "hardware": {
+    "machine": "arm64",
+    "platform": "macOS-15.7.4-arm64-arm-64bit",
+    "processor": "arm",
+    "python": "3.11.16"
+  },
+  "model_config": {
+    "api_key_env": null,
+    "deployment": "local",
+    "description": "Supersonic Labs Julia 1 144.3M local decision model",
+    "endpoint": "http://127.0.0.1:8013/v1/systemone",
+    "model": "SupersonicLabs/Julia-1",
+    "name": "julia1",
+    "parameters": {
+      "head_length": 512,
+      "marker_only_head": false,
+      "max_length": 8192,
+      "revision": "a85b127321d580d65176c89ced8273f305745d85",
+      "strict_encoding": true,
+      "torch": "2.14.0",
+      "transformers": "5.0.0",
+      "weights_sha256": "df853bf7fe424420011f3d0c47a05d7341aa9eefa7fb9f203ea4aada4ad95b72"
+    },
+    "pricing": null,
+    "provider": "systemone_http"
+  },
+  "run_id": "20260929T180051Z-julia1-bb4b47f8",
+  "started_at": "2026-09-29T18:00:51.041402+00:00",
+  "suite": {
+    "path": "datasets/suites/perf.yaml",
+    "sha256": "6ff90edfd36a18dfcb0cd7f58158d3be4c493b1fc44f334bb4a2e8cefd3721dc"
+  }
+}

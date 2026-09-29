@@ -2,11 +2,13 @@
 set -euo pipefail
 source "$(dirname "$0")/_common.sh"
 cat >&2 <<'MSG'
-This installs runtimes for the three active local models. Weights download on first start.
-Expected model payloads: Bosun ~sub-GB class, Decider ~8.4 GB BF16, SemIf/Qwen3.5-4B ~9.34 GB repository payload.
-Allow roughly 25 GiB free space for caches/runtimes. No 50+ GB model is part of this command.
+This installs runtimes for the four active local models. Julia 1 downloads during setup;
+Decider and SemIf download their large model payloads on first start.
+Expected model payloads: Bosun ~sub-GB class, Decider ~8.4 GB BF16, SemIf/Qwen3.5-4B ~9.34 GB repository payload, Julia 1 ~0.6 GB FP32 weights.
+Allow roughly 30 GiB free space for caches/runtimes. No 50+ GB model is part of this command.
 MSG
 [[ "${1:-}" == "--yes" ]] || { echo "Re-run as: scripts/setup-all-local --yes" >&2; exit 2; }
 "$ROOT/scripts/setup-model" bosun
 "$ROOT/scripts/setup-model" decider
 "$ROOT/scripts/setup-model" semif
+"$ROOT/scripts/setup-model" julia1

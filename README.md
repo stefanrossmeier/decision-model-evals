@@ -25,6 +25,12 @@ These are results on this corpus and this runtime setup, not universal model ran
 
 See [docs/BENCHMARK_RESULTS.md](docs/BENCHMARK_RESULTS.md) for calibration, Score metrics, concurrency scaling, provider cost, domains, paired comparisons, run IDs, and limitations.
 
+### Post-v1 Julia 1 result
+
+Julia 1 was added after the original v1 matrix as a very small local decision-model candidate. It is a 144.3M-parameter model based on the mmBERT-small / ModernBERT encoder family and runs locally on CPU. On the unchanged 5,760-case full suite it completed every case with zero errors and reached **42.20% overall accuracy**: 44.95% Choice, 58.54% Noul, and 23.12% Score exact. Its measured full-run p50 latency was only **27 ms** on the recorded arm64 macOS CPU host.
+
+That makes Julia 1 the fastest measured local entrant in this repository, but not a Jev-quality result on this corpus: it trails Jev by **32.29 percentage points** overall and Bosun by **12.73 points**. The full run finished in about **156 seconds** (36.83 req/s). See the post-v1 Julia section in [docs/BENCHMARK_RESULTS.md](docs/BENCHMARK_RESULTS.md) for the full quality, calibration, paired, and concurrency measurements.
+
 ## Models in the primary matrix
 
 The v1 matrix intentionally spans different deployment points rather than only similarly sized models.
@@ -35,6 +41,12 @@ The v1 matrix intentionally spans different deployment points rather than only s
 | `bosun` | Bosun v3.1 0.6B | Tiny local reference for low-latency, low-footprint deployment. |
 | `decider` | Mapika Decider 4B v2.1 | Strong 4B local decision model with a native System One endpoint and practical Mac/Linux runtime paths. |
 | `semif` | SemIf + pinned Qwen3.5-4B | Independent direct option-logit approach at the 4B scale, with Apple Silicon and Linux runtime paths. |
+
+Julia 1 is configured as a **post-v1 specialized local entrant** rather than retroactively changing the historical four-model matrix:
+
+| Key | Model | Why it is included |
+|---|---|---|
+| `julia1` | Supersonic Labs Julia 1 | 144.3M-parameter CPU-capable decision model; tests how far a very small ModernBERT-family encoder can go on the same frozen corpus. |
 
 Two initially selected models were removed from the primary matrix:
 
@@ -120,6 +132,7 @@ Local model servers run on fixed default ports:
 - Bosun: `127.0.0.1:8000`
 - Decider: `127.0.0.1:8011`
 - SemIf: `127.0.0.1:8012`
+- Julia 1: `127.0.0.1:8013`
 
 If another service already owns a port, stop it or change the relevant supported endpoint before benchmarking. A port collision can otherwise make a healthy model appear broken.
 

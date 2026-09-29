@@ -2,7 +2,7 @@
 
 The primary matrix is intentionally small. A model is included when it adds a useful deployment point, has a commercially usable path, has enough external evidence to be worth measuring, and can express Choice/Noul/Score without changing the semantic difficulty of the benchmark.
 
-The v1 matrix contains four models:
+The historical v1 matrix contains four models:
 
 | Key | Model | Role in the matrix | Deployment |
 |---|---|---|---|
@@ -13,7 +13,7 @@ The v1 matrix contains four models:
 
 Two initially selected models were later removed because their tested deployment paths did not fit the target hardware class. See [EXCLUDED_MODELS.md](EXCLUDED_MODELS.md).
 
-Two additional entries in `configs/models.yaml` are **post-v1 GPT-6 Luna experiments**, not members of the original primary matrix. They reuse the frozen v1 corpus to test a cheap general-purpose LLM under two classification inference strategies. See [LUNA_EXPERIMENTS.md](LUNA_EXPERIMENTS.md).
+Three additional entries in `configs/models.yaml` are **post-v1 entrants**, not members of the original primary matrix. `julia1` is a specialized tiny local decision model; `luna-structured` and `luna-classifier` are hosted GPT-6 Luna experiments. All reuse the frozen v1 corpus so their quality can be compared directly by corpus/suite hash without rewriting the historical four-model result.
 
 Upstream details below were checked during the v1 benchmark work in September 2026. Licenses are upstream-published terms, not legal advice.
 
@@ -28,6 +28,23 @@ Upstream details below were checked during the v1 benchmark work in September 20
 - Cost: use provider-reported billing from each run rather than reconstructing historic cost from a later price page.
 
 Jev is a hosted service entry. The project does not claim a downloadable Jev weight license or local deployment path.
+
+## Julia 1 (`julia1`)
+
+- Weights/runtime: [SupersonicLabs/Julia-1](https://huggingface.co/SupersonicLabs/Julia-1).
+- Base encoder: `jhu-clsp/mmBERT-small`, from the multilingual ModernBERT family.
+- Size: **144.3M parameters**, with a published FP32 checkpoint of about **550.5 MiB**.
+- License: Apache-2.0 on the published model artifact.
+- Benchmark pin: Julia repository revision `a85b127321d580d65176c89ced8273f305745d85`; weight SHA-256 `df853bf7fe424420011f3d0c47a05d7341aa9eefa7fb9f203ea4aada4ad95b72`.
+- Runtime pins: `torch==2.14.0`, `transformers==5.0.0`, strict encoding, 8,192-token runtime limit, 512-token question/options head budget, marker-only head disabled.
+- Transport: thin local `/v1/systemone` adapter around Julia's native named-question API; the adapter does not replace Julia's scoring logic.
+- Default endpoint: `http://127.0.0.1:8013/v1/systemone`.
+- Mac/Linux: CPU is the supported default in this benchmark; CUDA can be selected with `JULIA_DEVICE=cuda`. The published Julia runtime does not expose an MPS path.
+- Why included: it is much smaller than the earlier local entrants and directly tests whether a compact specialized encoder can provide useful Jev-like Choice/Noul/Score behavior on ordinary CPU hardware.
+
+The pinned revision is important because it preserves descriptive Boolean criteria in the named-question API. The upstream project also publishes a CPU FP32 typed-decision reproduction using the same Torch/Transformers versions; that reproduction is a different dataset and should not be treated as a substitute for this benchmark.
+
+The canonical post-v1 full run is `20260929T172106Z-julia1-cdeac5d1`. It completed all 5,760 cases with zero errors and scored **42.20% overall** (44.95% Choice, 58.54% Noul, 23.12% Score exact). Its full-run p50/p95 latency was **27.0/31.2 ms** on the recorded arm64 macOS CPU host. This is substantially faster than the other measured local paths, but quality on this corpus is also substantially lower. See [BENCHMARK_RESULTS.md](BENCHMARK_RESULTS.md).
 
 ## GPT-6 Luna experiments (`luna-structured`, `luna-classifier`)
 

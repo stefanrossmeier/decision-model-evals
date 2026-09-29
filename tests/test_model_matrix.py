@@ -8,10 +8,68 @@ ROOT = Path(__file__).resolve().parents[1]
 
 def test_primary_model_matrix_has_only_active_models() -> None:
     models = load_models(ROOT / "configs/models.yaml")
-    assert {"jev", "bosun", "decider", "semif"} <= set(models)
+    assert {"jev", "bosun", "decider", "semif", "julia1"} <= set(models)
     assert {"luna-structured", "luna-classifier"} <= set(models)
     assert "jevk5" not in models
     assert "autojev" not in models
+
+
+def _julia_server_module():
+    path = ROOT / "scripts/julia-server.py"
+    spec = importlib.util.spec_from_file_location("julia_server", path)
+    assert spec and spec.loader
+    module = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(module)
+    return module
+
+
+def test_julia_adapter_forwards_native_named_question_payload_without_rewriting() -> None:
+    m = _julia_server_module()
+    seen = {}
+
+    class FakeEngine:
+        def predict(self, *, state, questions):
+            seen["state"] = state
+            seen["questions"] = questions
+            return {
+                "answers": {
+                    "q": {
+                        "type": "noul",
+                        "noul": 0.8,
+                        "probabilities": {"false": 0.2, "true": 0.8},
+                    }
+                }
+            }
+
+    payload = {
+        "state": {"ticket": "duplicate charge"},
+        "questions": {
+            "q": {
+                "type": "noul",
+                "instructions": "Is this a billing issue?",
+                "criteria": {"false": "not billing", "true": "billing"},
+            }
+        },
+    }
+    result = m.predict_payload(FakeEngine(), payload)
+
+    assert seen == payload
+    assert result["answers"]["q"]["noul"] == 0.8
+    assert result["answers"]["q"]["probabilities"] == {"false": 0.2, "true": 0.8}
+
+
+def test_full_corpus_fits_julia_native_option_limit() -> None:
+    import json
+
+    for line in (ROOT / "datasets/corpus.jsonl").read_text(encoding="utf-8").splitlines():
+        row = json.loads(line)
+        criteria = row.get("criteria")
+        if row["primitive"] == "choice":
+            assert 2 <= len(criteria) <= 20
+        elif row["primitive"] == "score":
+            assert 2 <= len(criteria) <= 20
+        elif criteria is not None:
+            assert set(criteria) == {"false", "true"}
 
 
 def _semif_server_module():

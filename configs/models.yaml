@@ -30,6 +30,23 @@ models:
     deployment: local
     description: SemIf direct option-logit scorer over pinned Qwen3.5-4B
 
+  julia1:
+    provider: systemone_http
+    model: SupersonicLabs/Julia-1
+    endpoint_env: JULIA1_URL
+    endpoint: http://127.0.0.1:8013/v1/systemone
+    deployment: local
+    description: Supersonic Labs Julia 1 144.3M local decision model
+    parameters:
+      revision: a85b127321d580d65176c89ced8273f305745d85
+      weights_sha256: df853bf7fe424420011f3d0c47a05d7341aa9eefa7fb9f203ea4aada4ad95b72
+      torch: 2.14.0
+      transformers: 5.0.0
+      strict_encoding: true
+      max_length: 8192
+      head_length: 512
+      marker_only_head: false
+
   luna-structured:
     provider: openrouter_structured_classifier
     model: openai/gpt-6-luna

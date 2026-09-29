@@ -13,6 +13,8 @@ A local benchmark entrant should have, at minimum:
 3. no known published non-commercial adapter restriction that conflicts with the intended use;
 4. a public model card/repository sufficient to identify and pin the evaluated artifact.
 
+Julia 1 is a local entrant under this policy. The evaluated `SupersonicLabs/Julia-1` artifact publishes Apache-2.0 terms; the benchmark pins the exact model repository revision and weight hash used by the run.
+
 ## Hosted models
 
 A hosted model does not need downloadable weights. It should have a public service/API path with published terms suitable for the intended use, a stable or pinnable model identifier, and enough provider metadata to identify what was evaluated.

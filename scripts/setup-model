@@ -48,6 +48,63 @@ weights=bf16 (~9.34 GB repository payload)
 TXT
     echo "SemIf weights are downloaded on first start, not during setup." >&2
     ;;
-  *) echo "usage: scripts/setup-model {bosun|decider|semif}" >&2; exit 2;;
+  julia1)
+    dir="$MODELS_DIR/julia1"; require_free_disk_gib "$MODELS_DIR" 5; hf_auth_hint
+    revision="a85b127321d580d65176c89ced8273f305745d85"
+    weights_sha="df853bf7fe424420011f3d0c47a05d7341aa9eefa7fb9f203ea4aada4ad95b72"
+    uv venv "$dir/.venv" --python 3.11
+    py="$dir/.venv/bin/python"
+    if [[ "$(uname -s)" == "Linux" ]] && ! have_nvidia_cuda; then
+      uv pip install --python "$py" 'torch==2.14.0+cpu' \
+        --index-url https://download.pytorch.org/whl/cpu \
+        --extra-index-url https://pypi.org/simple \
+        --index-strategy unsafe-best-match
+    else
+      uv pip install --python "$py" 'torch==2.14.0'
+    fi
+    uv pip install --python "$py" \
+      'huggingface_hub>=1,<2' 'transformers==5.0.0' 'safetensors>=0.5' 'numpy>=1.26'
+    "$py" - "$dir/source" "$revision" <<'PY'
+from huggingface_hub import snapshot_download
+from pathlib import Path
+import sys
+
+target = Path(sys.argv[1])
+revision = sys.argv[2]
+target.mkdir(parents=True, exist_ok=True)
+snapshot_download(
+    "SupersonicLabs/Julia-1",
+    revision=revision,
+    local_dir=target,
+)
+PY
+    actual_sha="$("$py" - "$dir/source/model.safetensors" <<'PY'
+from pathlib import Path
+import hashlib, sys
+
+p = Path(sys.argv[1])
+h = hashlib.sha256()
+with p.open("rb") as f:
+    for chunk in iter(lambda: f.read(8 * 1024 * 1024), b""):
+        h.update(chunk)
+print(h.hexdigest())
+PY
+)"
+    if [[ "$actual_sha" != "$weights_sha" ]]; then
+      echo "error: Julia 1 weight SHA-256 mismatch: $actual_sha" >&2
+      exit 2
+    fi
+    uv pip install --python "$py" --no-deps -e "$dir/source"
+    cat > "$dir/REVISION.txt" <<TXT
+model=SupersonicLabs/Julia-1
+model_revision=$revision
+weights_sha256=$weights_sha
+runtime=supersonic-julia==0.1.0
+torch=2.14.0
+transformers=5.0.0
+encoding=strict max_length=8192 head_length=512 marker_only_head=false
+TXT
+    ;;
+  *) echo "usage: scripts/setup-model {bosun|decider|semif|julia1}" >&2; exit 2;;
 esac
 echo "setup complete for $model"

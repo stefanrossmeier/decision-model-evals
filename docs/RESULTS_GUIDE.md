@@ -34,4 +34,6 @@ report.md
 
 For the GPT-6 Luna post-v1 experiments, preserve OpenRouter's resolved model/provider identity and request-reported cost in the raw rows. The frozen protocol is in [LUNA_EXPERIMENTS.md](LUNA_EXPERIMENTS.md); the canonical run IDs and published comparison are in [LUNA_VS_JEV.md](LUNA_VS_JEV.md).
 
+For Julia 1, preserve the pinned Julia repository revision, weight SHA-256, Torch/Transformers versions, device (`cpu` or `cuda`), strict-encoding settings, and raw run directories. The canonical full run is `20260929T172106Z-julia1-cdeac5d1`; canonical perf runs are `20260929T180041Z-julia1-552c857d` (c=1), `20260929T180046Z-julia1-03ca558c` (c=4), and `20260929T180051Z-julia1-bb4b47f8` (c=16).
+
 When comparing models, keep quality, calibration, latency, throughput, deployment requirements, and cost as separate axes. Do not collapse them into an arbitrary composite score.

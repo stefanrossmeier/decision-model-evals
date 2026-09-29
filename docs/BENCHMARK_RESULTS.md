@@ -35,6 +35,24 @@ All four models completed all 5,760 full-suite cases with **zero provider/transp
 
 These are corpus-specific findings, not a universal ordering of the models.
 
+## Expanded frozen-corpus comparison
+
+The original v1 four-model table above remains historical. Later experiments reused the **same frozen 5,760-case corpus and full-suite hashes**, so the completed runs can also be viewed together without changing the underlying cases or labels. Julia 1 and the two GPT-6 Luna modes were added after the original v1 benchmark.
+
+| Model | Deployment | Overall | Choice | Noul | Score exact | Full-run p50 | Probability coverage |
+|---|---|---:|---:|---:|---:|---:|---:|
+| Jev 1.13 | hosted | 74.50% | 95.57% | 86.88% | 41.04% | 307 ms | 100% |
+| GPT-6 Luna — classifier | hosted | 73.14% | 95.31% | 85.26% | 38.85% | 938 ms | 0% |
+| GPT-6 Luna — structured | hosted | 73.12% | 94.74% | 85.26% | 39.38% | 922 ms | 0% |
+| Decider 4B v2.1 | local | 69.81% | 87.29% | 84.74% | 37.40% | 297 ms | 100% |
+| SemIf + Qwen3.5-4B | local | 66.42% | 85.36% | 75.68% | 38.23% | 711 ms | 100% |
+| Bosun v3.1 0.6B | local | 54.93% | 66.51% | 64.90% | 33.39% | 79 ms | 100% |
+| Julia 1 144.3M | local CPU | 42.20% | 44.95% | 58.54% | 23.12% | **27 ms** | 100% |
+
+Julia is the fastest measured local entrant by a wide margin on this host, but its quality is also the lowest of the completed full-suite runs. It finished **32.29 percentage points behind Jev overall**, **27.60 points behind Decider**, **24.22 points behind SemIf**, and **12.73 points behind Bosun**. The two Luna rows do not expose model probability distributions through the evaluated OpenRouter path, so their `0%` probability coverage is an interface limitation rather than a statement about hidden model confidence.
+
+Latency comparisons require caution: all local runs were recorded on an arm64 macOS host, but the exact Apple chip and memory were not captured; Jev and Luna include network/provider latency. Julia used its CPU FP32 runtime, while Decider/SemIf used their documented Apple-local paths.
+
 ## Probability quality and calibration
 
 Accuracy is not enough for decision models because applications often route on probabilities.
@@ -108,6 +126,18 @@ For these specific local serving paths, increasing client concurrency mostly cre
 Jev scaled differently: throughput rose from 3.06 req/s at concurrency 1 to 44.33 req/s at concurrency 16. Median latency remained near ~300 ms, although the p95 tail rose to 853 ms at concurrency 16.
 
 The hosted perf runs were not bit-for-bit deterministic: the repeated 180-case runs showed small probability/prediction variation and perf accuracy ranged from 71.7% to 72.8%. Do not use the perf subset as a replacement for the full quality result.
+
+### Post-v1 Julia 1 performance
+
+Julia 1 used the same frozen 180-case perf suite on the recorded arm64 macOS host, running CPU FP32 inference. All three runs returned identical quality (42.22%) and zero errors.
+
+| Concurrency | Throughput | p50 | p95 | Perf accuracy |
+|---:|---:|---:|---:|---:|
+| 1 | 36.19 req/s | 27 ms | 31 ms | 42.22% |
+| 4 | **37.22 req/s** | 106 ms | 115 ms | 42.22% |
+| 16 | 36.52 req/s | 427 ms | 466 ms | 42.22% |
+
+The nearly flat ~36–37 req/s throughput together with roughly linear latency growth indicates that this simple local serving path mostly serialized CPU inference under concurrent load. Even so, its single-request path was about **2.9× faster than Bosun's measured p50** on the same recorded host class (27 ms vs. 79 ms), and the 5,760-case Julia full run completed in **156.4 seconds** (~2.6 minutes).
 
 ## Cost
 
@@ -199,13 +229,44 @@ This evaluation used the PyTorch/MPS path on Apple Silicon. Upstream SemIf docum
 - full-run throughput: **12.23 req/s**
 - provider errors: **0 / 5,760**
 
-Bosun was the smallest and fastest local reference. It was materially weaker on overall quality but remains useful when low per-request latency and a small local deployment footprint matter.
+Bosun was the smallest and fastest local reference in the original v1 matrix. It was materially weaker on overall quality but remains useful when low per-request latency and a small local deployment footprint matter. Julia 1 later established an even smaller/faster post-v1 CPU point, with substantially lower quality on this corpus.
+
+### Julia 1 144.3M (post-v1)
+
+- model: `SupersonicLabs/Julia-1`
+- pinned Julia revision: `a85b127321d580d65176c89ced8273f305745d85`
+- weight SHA-256: `df853bf7fe424420011f3d0c47a05d7341aa9eefa7fb9f203ea4aada4ad95b72`
+- base encoder: `jhu-clsp/mmBERT-small` / multilingual ModernBERT family
+- deployment: local CPU through a thin `/v1/systemone` adapter around Julia's native named-question API
+- full run: `20260929T172106Z-julia1-cdeac5d1`
+- benchmark revision: `42bb8c152faf52a9011f153d627927f1abed4de5`
+- overall accuracy: **42.20%** (95% Wilson CI 40.94–43.49%)
+- full-run duration: **156.41 s** (~2.6 min)
+- full-run throughput: **36.83 req/s**
+- p50 / p95: **27.0 / 31.2 ms**
+- provider/transport errors: **0 / 5,760**
+
+Primitive quality was **44.95% Choice**, **58.54% Noul**, and **23.12% Score exact**. Score within-1 accuracy was 54.32%, expected-score MAE 1.357, selected-score MAE 1.481, and quadratic weighted kappa 0.078. Julia exposed complete probability distributions for every case, but calibration was weak on this corpus: Choice/Noul/Score ECE were 0.414/0.318/0.527 respectively.
+
+Paired correctness confirms that this is not a small aggregate gap. Against Jev, there were **2,246 cases correct only for Jev versus 386 correct only for Julia**. Against Bosun, there were **1,506 Bosun-only versus 773 Julia-only** cases. Julia's strongest domains were HR operations (57.22%), finance operations (51.39%), and customer support (51.11%); its weakest were workflow routing (28.89%), ecommerce (31.67%), and research (33.61%).
+
+The result is notably different from Julia's own [published typed-decision benchmark](https://huggingface.co/SupersonicLabs/Julia-1). The upstream project reports a September 26 CPU FP32 reproduction of 426/600 Choice, 483/600 Noul, and 542/800 Score on its pinned typed dataset. That is a **different dataset and task distribution**, so the numbers are not contradictory; the gap is evidence that Julia's published typed benchmark did not transfer to this frozen enterprise-style corpus. The benchmark adapter preserves the native question descriptions and uses the same strict-encoding/runtime settings rather than replacing Julia's decision logic.
 
 ## Reproducibility and publication notes
 
 The repository intentionally ignores `results/*/` by default. For a public benchmark release, publish the exact raw run directories used for these tables as release assets or another immutable artifact store. At minimum retain each run's `manifest.json`, `results.jsonl`, `summary.json`, and `report.md`.
 
 The v1 hardware manifest records architecture/OS but not the exact Apple chip or memory size. Future performance publications should capture those fields before making cross-machine claims.
+
+Canonical Julia artifacts included with this result set:
+
+- probe: `20260929T172051Z-julia1-cccb0a52`
+- smoke: `20260929T172052Z-julia1-e65c7946`
+- quick: `20260929T172052Z-julia1-fcfe2f76`
+- full: `20260929T172106Z-julia1-cdeac5d1`
+- perf c=1: `20260929T180041Z-julia1-552c857d`
+- perf c=4: `20260929T180046Z-julia1-03ca558c`
+- perf c=16: `20260929T180051Z-julia1-bb4b47f8`
 
 See [METHODOLOGY.md](METHODOLOGY.md) for metric definitions and [RESULTS_GUIDE.md](RESULTS_GUIDE.md) for publication requirements.
 

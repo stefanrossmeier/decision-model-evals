@@ -107,6 +107,28 @@ In another terminal:
 
 Decider uses `127.0.0.1:8011` by default.
 
+### Julia 1
+
+```bash
+./scripts/setup-model julia1
+./scripts/check-model julia1
+```
+
+Setup downloads and verifies the pinned ~550 MiB FP32 checkpoint. Start Julia in terminal 1:
+
+```bash
+./scripts/start-model julia1
+```
+
+Then in terminal 2:
+
+```bash
+./scripts/probe julia1
+./scripts/smoke julia1
+```
+
+Julia uses `127.0.0.1:8013` by default. The benchmark defaults to CPU on macOS and non-CUDA Linux. On a CUDA host, `JULIA_DEVICE=cuda ./scripts/start-model julia1` selects CUDA explicitly. You can tune CPU threads with `JULIA_CPU_THREADS`, for example `JULIA_CPU_THREADS=8 ./scripts/start-model julia1`.
+
 ### SemIf
 
 ```bash
@@ -190,6 +212,7 @@ If a local server fails to bind, check whether another application already owns 
 lsof -nP -iTCP:8000 -sTCP:LISTEN
 lsof -nP -iTCP:8011 -sTCP:LISTEN
 lsof -nP -iTCP:8012 -sTCP:LISTEN
+lsof -nP -iTCP:8013 -sTCP:LISTEN
 ```
 
 This matters especially for port 8000, which is commonly used by other local inference servers.
